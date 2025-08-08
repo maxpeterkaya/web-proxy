@@ -14,9 +14,6 @@ builds:
       - linux
       - windows
       - darwin
-      - freebsd
-      - openbsd
-      - netbsd
     goarch:
       - amd64
       - arm

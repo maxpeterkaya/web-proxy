@@ -19,9 +19,9 @@ import (
 )
 
 var (
-	version   = "dev"
-	commit    = "none"
-	buildTime = "unknown"
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
 )
 
 func init() {
@@ -113,7 +113,7 @@ func main() {
 		},
 	}))
 
-	log.Info().Str("version", version).Str("commit", commit).Str("date", buildTime).Msg("")
+	log.Info().Str("version", version).Str("commit", commit).Str("date", date).Msg("")
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 

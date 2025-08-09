@@ -22,6 +22,14 @@ builds:
       - 6
       - 7
 
+archives:
+  - id: binary
+    format: binary
+    name_template: `{ { .Binary } }_{{ .Os }}_{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}{{ with .Mips }}_{{ . }}{{ end }}{{ if not (eq .Amd64 "v1") }}{{ .Amd64 }}{{ end }}`
+
+  - id: tar
+    format: tar.gz
+
 dockers:
   - image_templates:
       - "ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-amd64"
@@ -36,7 +44,7 @@ dockers:
       - --label=org.opencontainers.image.revision={{.FullCommit}}
       - --label=org.opencontainers.image.version={{.Version}}
       - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxpeterkaya.com"}]
+      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxkaya.com"}]
       - --label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/maxpeterkaya/web-proxy/main/README.md
       - --label=io.artifacthub.package.keywords=update-server,github,electron,tauri,wails
       - --label=io.artifacthub.package.license=Apache-2.0
@@ -54,7 +62,7 @@ dockers:
       - --label=org.opencontainers.image.revision={{.FullCommit}}
       - --label=org.opencontainers.image.version={{.Version}}
       - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxpeterkaya.com"}]
+      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxkaya.com"}]
       - --label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/maxpeterkaya/web-proxy/main/README.md
       - --label=io.artifacthub.package.keywords=logging,log,alloy,promtail,grafana,loki,nextjs,golang,json
       - --label=io.artifacthub.package.license=Apache-2.0
@@ -72,7 +80,7 @@ dockers:
       - --label=org.opencontainers.image.revision={{.FullCommit}}
       - --label=org.opencontainers.image.version={{.Version}}
       - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxpeterkaya.com"}]
+      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxkaya.com"}]
       - --label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/maxpeterkaya/web-proxy/main/README.md
       - --label=io.artifacthub.package.keywords=logging,log,alloy,promtail,grafana,loki,nextjs,golang,json
       - --label=io.artifacthub.package.license=Apache-2.0

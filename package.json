@@ -1,6 +1,6 @@
 {
-  "name": "log-proxy",
-  "version": "1.0.0",
+  "name": "@maxpeterkaya/web-proxy",
+  "version": "1.0.1",
   "description": "Server middleware enabling better logging for web apps through structured logs",
   "bin": {
     "web-proxy": "bin/run.js"

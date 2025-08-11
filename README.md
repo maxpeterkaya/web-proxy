@@ -1,5 +1,7 @@
 # Web-proxy
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/web-proxy)](https://artifacthub.io/packages/search?repo=web-proxy)
+
 ## Introduction
 
 This project aims to provide a better logging solution to web applications that lack structured logs.
@@ -9,6 +11,10 @@ Some of these frameworks may include:
 
 - NextJS
 - PrismaORM
+
+## Examples
+
+- [Container middleware](https://github.com/maxpeterkaya/web-proxy/tree/main/examples/container-middleware)
 
 ## Roadmap
 
@@ -21,3 +27,4 @@ These bullet points are in no particular order of importance or difficulty.
 - Screenshots
 - Benchmarks
 - Configurable logs
+- NPM package

@@ -1,0 +1,33 @@
+{
+  "name": "log-proxy",
+  "version": "1.0.0",
+  "description": "Server middleware enabling better logging for web apps through structured logs",
+  "bin": {
+    "web-proxy": "bin/run.js"
+  },
+  "scripts": {
+    "postinstall": "node install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maxpeterkaya/web-proxy"
+  },
+  "keywords": [
+    "nextjs",
+    "json logs",
+    "alloy",
+    "loki",
+    "grafana",
+    "promtail",
+    "golang",
+    "logger",
+    "metrics",
+    "proxy"
+  ],
+  "private": false,
+  "author": {
+    "name": "Max Kaya",
+    "email": "info@maxkaya.com"
+  },
+  "license": "Apache-2.0"
+}

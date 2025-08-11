@@ -1,0 +1,5 @@
+services:
+  WEBAPP:
+    image: webapp:latest # Change webapp to whatever your repo is. (github: ghcr.io/USERNAME/REPO)
+    ports:
+      - "PORT:3000" # Change PORT to whatever port you want your container to run on, you can leave 3000 the same unless you configure web-proxy to run on a different port.

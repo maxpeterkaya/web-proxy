@@ -12,6 +12,8 @@ Some of these frameworks may include:
 - NextJS
 - PrismaORM
 
+## [Installation Guide](https://github.com/maxpeterkaya/web-proxy/blob/main/INSTALL-GUIDE.md)
+
 ## Examples
 
 - [Container middleware](https://github.com/maxpeterkaya/web-proxy/tree/main/examples/container-middleware)

@@ -35,7 +35,7 @@ const destFile = path.join(destDir, `${platform === "win32" ? "web-proxy.exe" : 
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.statusText}`);
 
-    const fileStream = fs.createWriteStream(destFile);
+    const fileStream = fs.createWriteStream(destFile, {mode: 0o755});
     await finished(Readable.fromWeb(res.body).pipe(fileStream));
 
     console.info('web-proxy installed.');

@@ -41,6 +41,12 @@ func main() {
 	proxy := httputil.NewSingleHostReverseProxy(target)
 
 	e.GET("/*", echo.WrapHandler(proxy))
+	e.POST("/*", echo.WrapHandler(proxy))
+	e.PUT("/*", echo.WrapHandler(proxy))
+	e.DELETE("/*", echo.WrapHandler(proxy))
+	e.HEAD("/*", echo.WrapHandler(proxy))
+	e.PATCH("/*", echo.WrapHandler(proxy))
+	e.OPTIONS("/*", echo.WrapHandler(proxy))
 
 	// --- Middleware
 	e.IPExtractor = echo.ExtractIPFromXFFHeader()

@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
 	"os"
 	"os/signal"
@@ -38,15 +37,6 @@ func main() {
 	e := echo.New()
 
 	target, _ := url.Parse(fmt.Sprintf("http://localhost:%d", Config.ProxyPort))
-	proxy := httputil.NewSingleHostReverseProxy(target)
-
-	e.GET("/*", echo.WrapHandler(proxy))
-	e.POST("/*", echo.WrapHandler(proxy))
-	e.PUT("/*", echo.WrapHandler(proxy))
-	e.DELETE("/*", echo.WrapHandler(proxy))
-	e.HEAD("/*", echo.WrapHandler(proxy))
-	e.PATCH("/*", echo.WrapHandler(proxy))
-	e.OPTIONS("/*", echo.WrapHandler(proxy))
 
 	// --- Middleware
 	e.IPExtractor = echo.ExtractIPFromXFFHeader()
@@ -73,7 +63,9 @@ func main() {
 			route := ""
 
 			if !ext {
-				route = v.URI
+				uri, _ := url.Parse(v.URI)
+				uri.RawQuery = ""
+				route = uri.String()
 			}
 
 			if v.Error != nil {
@@ -118,6 +110,11 @@ func main() {
 			return nil
 		},
 	}))
+	e.Use(middleware.Proxy(middleware.NewRoundRobinBalancer([]*middleware.ProxyTarget{
+		{
+			URL: target,
+		},
+	})))
 
 	log.Info().Str("version", version).Str("commit", commit).Str("date", date).Msg("")
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)

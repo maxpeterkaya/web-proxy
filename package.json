@@ -1,12 +1,13 @@
 {
   "name": "@maxpeterkaya/web-proxy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Server middleware enabling better logging for web apps through structured logs",
   "bin": {
     "web-proxy": "bin/run.js"
   },
   "scripts": {
-    "postinstall": "node install.js"
+    "postinstall": "node bin/install.js",
+    "start": "npx web-proxy"
   },
   "repository": {
     "type": "git",

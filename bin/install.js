@@ -25,7 +25,7 @@ if (!assetName) {
 }
 
 const url = `https://github.com/maxpeterkaya/web-proxy/releases/latest/download/web-proxy_${assetName}`;
-const destDir = path.join(__dirname, 'bin');
+const destDir = path.join(__dirname);
 const destFile = path.join(destDir, `${platform === "win32" ? "web-proxy.exe" : "web-proxy"}`);
 
 (async () => {

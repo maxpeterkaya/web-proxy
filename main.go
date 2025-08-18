@@ -116,7 +116,7 @@ func main() {
 		},
 	})))
 
-	log.Info().Str("version", version).Str("commit", commit).Str("date", date).Msg("")
+	log.Info().Str("proxy-version", version).Str("proxy-commit", commit).Str("proxy-date", date)
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 

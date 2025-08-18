@@ -11,3 +11,4 @@ go.work
 .vscode
 dist
 node_modules
+bin/web-proxy

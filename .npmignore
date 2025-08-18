@@ -18,3 +18,4 @@ Dockerfile
 Dockerfile-snapshot
 *.yml
 .idea
+bin/web-proxy

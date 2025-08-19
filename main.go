@@ -3,11 +3,14 @@ package main
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"os/signal"
+	"strings"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -22,13 +25,9 @@ var (
 	commit  = "none"
 	date    = "unknown"
 
-	npmVersion = "npm"
+	npmVersion   = "npm"
+	startCommand = ""
 )
-
-type Package struct {
-	Name    string `json:"name"`
-	Version string `json:"version"`
-}
 
 func init() {
 	if err := godotenv.Load(); err != nil {
@@ -39,6 +38,34 @@ func init() {
 }
 
 func main() {
+	var shouldRunApp bool
+	flag.BoolVar(&shouldRunApp, "app", false, "Run web-app through web-proxy")
+
+	var shouldLogApp bool
+	flag.BoolVar(&shouldLogApp, "log", true, "Log web-app")
+
+	flag.Parse()
+
+	var CMD *exec.Cmd
+
+	if shouldRunApp {
+		ExtractPackage()
+
+		CMD = exec.Command(strings.Split(startCommand, " ")[0], strings.Split(startCommand, " ")[1:]...)
+
+		if shouldLogApp {
+			CMD.Stdout = os.Stdout
+		}
+
+		CMD.Stderr = os.Stderr
+
+		err := CMD.Start()
+		if err != nil {
+			log.Error().Err(err).Msg("Error starting web-app")
+			return
+		}
+	}
+
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnixMs
 
 	e := echo.New()
@@ -144,5 +171,15 @@ func main() {
 		log.Fatal().Err(err).Msg("error shutting down server")
 	} else {
 		log.Info().Msg("shutting down server")
+
+		err = CMD.Process.Signal(os.Interrupt)
+		if err != nil {
+			log.Error().Err(err).Msg("error interrupting web-app")
+
+			err = CMD.Process.Signal(os.Kill)
+			if err != nil {
+				log.Fatal().Err(err).Msg("error killing web-app")
+			}
+		}
 	}
 }

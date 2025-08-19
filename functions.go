@@ -5,9 +5,16 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 )
+
+type Package struct {
+	Name    string            `json:"name"`
+	Version string            `json:"version"`
+	Scripts map[string]string `json:"scripts"`
+}
 
 func hasExtension(filename string) bool {
 	return filepath.Ext(filename) != ""
@@ -54,4 +61,28 @@ func FileExists(filename string) bool {
 		return false
 	}
 	return true
+}
+
+func ExtractPackage() {
+	file, err := os.ReadFile("package.json")
+	if err != nil {
+		log.Fatal().Err(err).Msg("error creating package.json")
+		return
+	}
+
+	pac := Package{}
+
+	err = json.Unmarshal(file, &pac)
+	if err != nil {
+		log.Fatal().Err(err).Msg("error parsing package.json")
+		return
+	}
+
+	startScript := pac.Scripts["start"]
+
+	if strings.Contains(startScript, "next") && !strings.Contains(startScript, "-p") {
+		startScript = startScript + " -p 3001"
+	}
+
+	startCommand = startScript
 }

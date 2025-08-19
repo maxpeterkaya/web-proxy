@@ -79,7 +79,7 @@ func ExtractPackage() {
 		return
 	}
 
-	startScript := pac.Scripts["start"]
+	startScript := pac.Scripts["start:web"]
 
 	if strings.Contains(startScript, "next") && !strings.Contains(startScript, "-p") {
 		startScript = fmt.Sprintf("%s -p %d", startScript, Config.ProxyPort)

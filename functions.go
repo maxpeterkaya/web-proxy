@@ -1,7 +1,57 @@
 package main
 
-import "path/filepath"
+import (
+	"bufio"
+	"encoding/json"
+	"os"
+	"path/filepath"
+
+	"github.com/rs/zerolog/log"
+)
 
 func hasExtension(filename string) bool {
 	return filepath.Ext(filename) != ""
+}
+
+func NpmVersionExtractor() {
+	fileExists := FileExists("VERSION")
+	if fileExists {
+		file, err := os.Open("VERSION")
+		if err != nil {
+			log.Fatal().Err(err).Msg("error opening VERSION file")
+			return
+		}
+		defer file.Close()
+
+		scanner := bufio.NewScanner(file)
+		npmVersion = scanner.Text()
+
+		return
+	} else {
+		file, err := os.ReadFile("package.json")
+		if err != nil {
+			log.Fatal().Err(err).Msg("error creating package.json")
+			return
+		}
+
+		pac := Package{}
+
+		err = json.Unmarshal(file, &pac)
+		if err != nil {
+			log.Fatal().Err(err).Msg("error parsing package.json")
+			return
+		}
+
+		npmVersion = pac.Version
+	}
+
+	return
+}
+
+func FileExists(filename string) bool {
+	_, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return true
 }

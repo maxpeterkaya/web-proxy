@@ -8,29 +8,42 @@ version through commands.
 
 ### Step 1
 
-Install: ``npm i @maxpeterkaya/web-proxy concurrently``
+Install: ``npm i @maxpeterkaya/web-proxy``
 
 While running ``npm i``, it will automatically download the latest binary with execution permissions.
 
-Currently you need to run your app and web-proxy through concurrently to ensure both are running concurrently.
 
 ### Step 2
 
-Add the following scripts to your package.json:
+> You can run your web app either through web-proxy or concurrently. To run your app through web-proxy, pass the **-app
+** argument.
+
+Add the following scripts to your package.json to run your app through web-proxy:
 
 ```json
 {
   "scripts": {
-    "start:proxy": "./node_modules/.bin/web-proxy",
+    "start:web": "YOUR COMMAND TO START YOUR APP",
+    "start": "npx web-proxy -app"
+  }
+}
+```
+
+Add the following scripts to your package.json to run your app and web-proxy concurrently:
+
+Install: ``npm i concurrently``
+
+```json
+{
+  "scripts": {
+    "start:proxy": "npx web-proxy",
     "start:web": "YOUR COMMAND TO START YOUR APP",
     "start": "concurrently --prefix none \"npm run start:web\" \"npm run start:proxy\""
   }
 }
 ```
 
-You can view the docs for concurrently [here](https://github.com/open-cli-tools/concurrently/tree/main/docs).
-
-#
+> You can view the docs for concurrently [here](https://github.com/open-cli-tools/concurrently/tree/main/docs).
 
 In the future web-proxy will be able to start your web app itself without the use of concurrently.
 

@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -81,7 +82,7 @@ func ExtractPackage() {
 	startScript := pac.Scripts["start"]
 
 	if strings.Contains(startScript, "next") && !strings.Contains(startScript, "-p") {
-		startScript = startScript + " -p 3001"
+		startScript = fmt.Sprintf("%s -p %d", startScript, Config.ProxyPort)
 	}
 
 	startCommand = startScript

@@ -26,7 +26,7 @@ func NpmVersionExtractor() {
 	if fileExists {
 		file, err := os.Open("VERSION")
 		if err != nil {
-			log.Fatal().Err(err).Msg("error opening VERSION file")
+			log.Error().Err(err).Msg("error opening VERSION file")
 			return
 		}
 		defer file.Close()
@@ -38,7 +38,7 @@ func NpmVersionExtractor() {
 	} else {
 		file, err := os.ReadFile("package.json")
 		if err != nil {
-			log.Fatal().Err(err).Msg("error creating package.json")
+			log.Error().Err(err).Msg("error reading package.json")
 			return
 		}
 
@@ -46,7 +46,7 @@ func NpmVersionExtractor() {
 
 		err = json.Unmarshal(file, &pac)
 		if err != nil {
-			log.Fatal().Err(err).Msg("error parsing package.json")
+			log.Error().Err(err).Msg("error parsing package.json")
 			return
 		}
 
@@ -67,7 +67,7 @@ func FileExists(filename string) bool {
 func ExtractPackage() {
 	file, err := os.ReadFile("package.json")
 	if err != nil {
-		log.Fatal().Err(err).Msg("error creating package.json")
+		log.Error().Err(err).Msg("error reading package.json")
 		return
 	}
 
@@ -75,7 +75,7 @@ func ExtractPackage() {
 
 	err = json.Unmarshal(file, &pac)
 	if err != nil {
-		log.Fatal().Err(err).Msg("error parsing package.json")
+		log.Error().Err(err).Msg("error parsing package.json")
 		return
 	}
 

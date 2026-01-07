@@ -27,6 +27,7 @@ var (
 
 	npmVersion   = "npm"
 	startCommand = ""
+	staticFolder = "dist"
 )
 
 func init() {
@@ -38,39 +39,24 @@ func init() {
 }
 
 func main() {
+	// Set log time to be in unix
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnixMs
+
+	// --- web-proxy CLI flags
 	var shouldRunApp bool
 	flag.BoolVar(&shouldRunApp, "app", false, "Run web-app through web-proxy")
 
 	var shouldLogApp bool
 	flag.BoolVar(&shouldLogApp, "log", true, "Log web-app")
 
+	var staticWeb bool
+	flag.BoolVar(&staticWeb, "static", false, "Use static website build")
+	flag.StringVar(&staticFolder, "static-dir", "dist", "Folder containing static build")
+
 	flag.Parse()
 
-	var CMD *exec.Cmd
-
-	if shouldRunApp {
-		ExtractPackage()
-
-		CMD = exec.Command(strings.Split(startCommand, " ")[0], strings.Split(startCommand, " ")[1:]...)
-
-		if shouldLogApp {
-			CMD.Stdout = os.Stdout
-		}
-
-		CMD.Stderr = os.Stderr
-
-		err := CMD.Start()
-		if err != nil {
-			log.Error().Err(err).Msg("Error starting web-app")
-			return
-		}
-	}
-
-	zerolog.TimeFieldFormat = zerolog.TimeFormatUnixMs
-
+	// Initialize echo
 	e := echo.New()
-
-	target, _ := url.Parse(fmt.Sprintf("http://localhost:%d", Config.ProxyPort))
 
 	// --- Middleware
 	e.IPExtractor = echo.ExtractIPFromXFFHeader()
@@ -144,11 +130,38 @@ func main() {
 			return nil
 		},
 	}))
-	e.Use(middleware.Proxy(middleware.NewRoundRobinBalancer([]*middleware.ProxyTarget{
-		{
-			URL: target,
-		},
-	})))
+
+	var CMD *exec.Cmd
+
+	if shouldRunApp {
+		ExtractPackage()
+
+		CMD = exec.Command(strings.Split(startCommand, " ")[0], strings.Split(startCommand, " ")[1:]...)
+
+		if shouldLogApp {
+			CMD.Stdout = os.Stdout
+		}
+
+		CMD.Stderr = os.Stderr
+
+		err := CMD.Start()
+		if err != nil {
+			log.Error().Err(err).Msg("Error starting web-app")
+			return
+		}
+	}
+
+	if staticWeb {
+		e.Static("/", staticFolder)
+	} else {
+		target, _ := url.Parse(fmt.Sprintf("http://localhost:%d", Config.ProxyPort))
+
+		e.Use(middleware.Proxy(middleware.NewRoundRobinBalancer([]*middleware.ProxyTarget{
+			{
+				URL: target,
+			},
+		})))
+	}
 
 	NpmVersionExtractor()
 
@@ -172,13 +185,15 @@ func main() {
 	} else {
 		log.Info().Msg("shutting down server")
 
-		err = CMD.Process.Signal(os.Interrupt)
-		if err != nil {
-			log.Error().Err(err).Msg("error interrupting web-app")
-
-			err = CMD.Process.Signal(os.Kill)
+		if shouldRunApp {
+			err = CMD.Process.Signal(os.Interrupt)
 			if err != nil {
-				log.Fatal().Err(err).Msg("error killing web-app")
+				log.Error().Err(err).Msg("error interrupting web-app")
+
+				err = CMD.Process.Signal(os.Kill)
+				if err != nil {
+					log.Fatal().Err(err).Msg("error killing web-app")
+				}
 			}
 		}
 	}

@@ -18,7 +18,7 @@ jobs:
       - name: Install Docker CLI
         run: apk add --no-cache docker-cli
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Extract Version
         id: version_step
@@ -68,7 +68,7 @@ jobs:
     runs-on: arch
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Update CHANGELOG
         id: changelog

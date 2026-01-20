@@ -44,7 +44,7 @@ jobs:
         with:
           registry: vc.maxkaya.com
           username: ${{github.actor}}
-          password: ${{ secrets.TOKEN }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
 
       - name: PrepareReg Names
         id: read-docker-image-identifiers

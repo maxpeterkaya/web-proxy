@@ -23,8 +23,10 @@ jobs:
       - name: Extract Version
         id: version_step
         run: |
-          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-          echo "version_tag=${GITHUB_REPOSITORY}:${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG_NAME#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_tag=${GITHUB_REPOSITORY}:$VERSION" >> $GITHUB_OUTPUT
           echo "COMMIT_SHA_SHORT=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
           echo "CURRENT_TIME=$(date --utc +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
 

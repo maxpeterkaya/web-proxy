@@ -1,25 +1,14 @@
-FROM golang:1.24 AS builder
+FROM debian:bookworm AS certs
 
-# define the build arguments
-ARG GIT_VERSION
-ARG GIT_COMMIT
-ARG GIT_DATE
-
-ENV GIT_VERSION=${GIT_VERSION}
-ENV GIT_COMMIT=${GIT_COMMIT}
-ENV GIT_DATE=${GIT_DATE}
-
-WORKDIR /app
-
-# build everything
-COPY . .
-RUN CGO_ENABLED=0 go build -o web-proxy -ldflags="-X 'main.version=${GIT_VERSION}' -X 'main.commit=${GIT_COMMIT}' -X 'main.date=${GIT_DATE}'" .
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 FROM scratch
 
-# Copy binary
-COPY --from=builder /app/web-proxy /usr/bin/
+COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-EXPOSE 3000
+ARG TARGETPLATFORM
 
 ENTRYPOINT ["/usr/bin/web-proxy"]
+
+COPY $TARGETPLATFORM/web-proxy /usr/bin/

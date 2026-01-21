@@ -1,5 +1,6 @@
 project_name: web-proxy
 version: 2
+force_token: gitea
 
 before:
   hooks:
@@ -36,28 +37,29 @@ gitea_urls:
   download: https://vc.maxkaya.com
   skip_tls_verify: true
 
-#dockers_v2:
-#  - id: web-proxy
-#    ids:
-#      - binary
-#      - web-proxy
-#    images:
-#      - "vc.maxkaya.com/maxpeterkaya/web-proxy"
-#    tags:
-#      - "v{{ .Version }}"
-#      - "{{ if not .IsNightly }}latest{{ end }}"
-#    labels:
-#      "org.opencontainers.image.description": "web-proxy"
-#      "org.opencontainers.image.created": "{{.Date}}"
-#      "org.opencontainers.image.name": "{{.ProjectName}}"
-#      "org.opencontainers.image.revision": "{{.FullCommit}}"
-#      "org.opencontainers.image.version": "{{.Version}}"
-#      "org.opencontainers.image.source": "{{.GitURL}}"
-#    platforms:
-#      - linux/amd64
-#      - linux/arm64
-#      - linux/arm/v7
-#    sbom: "{{ not .IsNightly }}"
+dockers_v2:
+  - id: web-proxy
+    ids:
+      - binary
+      - web-proxy
+    images:
+      - "vc.maxkaya.com/maxpeterkaya/web-proxy"
+    tags:
+      - "v{{ .Version }}"
+      - "{{ .Version }}"
+      - "latest"
+    labels:
+      "org.opencontainers.image.description": "web-proxy"
+      "org.opencontainers.image.created": "{{.Date}}"
+      "org.opencontainers.image.name": "{{.ProjectName}}"
+      "org.opencontainers.image.revision": "{{.FullCommit}}"
+      "org.opencontainers.image.version": "{{.Version}}"
+      "org.opencontainers.image.source": "{{.GitURL}}"
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - linux/arm/v7
+    sbom: "{{ not .IsNightly }}"
 
 #dockers:
 #  - image_templates:

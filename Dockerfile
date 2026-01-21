@@ -9,14 +9,16 @@ ENV GIT_VERSION=${GIT_VERSION}
 ENV GIT_COMMIT=${GIT_COMMIT}
 ENV GIT_DATE=${GIT_DATE}
 
+WORKDIR /app
+
 # build everything
-COPY . /.
-RUN CGO_ENABLED=0 go build -o /web-proxy -ldflags="-X 'main.version=${GIT_VERSION}' -X 'main.commit=${GIT_COMMIT}' -X 'main.date=${GIT_DATE}'" /.
+COPY . .
+RUN CGO_ENABLED=0 go build -o web-proxy -ldflags="-X 'main.version=${GIT_VERSION}' -X 'main.commit=${GIT_COMMIT}' -X 'main.date=${GIT_DATE}'" .
 
 FROM scratch
 
 # Copy binary
-COPY --from=builder /web-proxy /usr/bin/
+COPY --from=builder /app/web-proxy /usr/bin/
 
 EXPOSE 3000
 

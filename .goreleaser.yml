@@ -131,11 +131,6 @@ dockers_v2:
 source:
   enabled: true
 
-sboms:
-  - artifacts: archive
-  - id: source
-    artifacts: source
-
 checksum:
   name_template: 'checksums.txt'
 

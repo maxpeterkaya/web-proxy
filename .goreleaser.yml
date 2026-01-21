@@ -144,7 +144,7 @@ release:
 
 changelog:
   sort: asc
-  use: gitea
+  use: git
   filters:
     exclude:
       - '^test:'

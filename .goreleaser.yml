@@ -137,9 +137,14 @@ sboms:
 checksum:
   name_template: 'checksums.txt'
 
+release:
+  gitea:
+    owner: maxpeterkaya
+    name: web-proxy
+
 changelog:
   sort: asc
-  use: github
+  use: gitea
   filters:
     exclude:
       - '^test:'

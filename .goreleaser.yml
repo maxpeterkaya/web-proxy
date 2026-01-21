@@ -1,4 +1,5 @@
 project_name: web-proxy
+version: 2
 
 before:
   hooks:
@@ -9,7 +10,6 @@ builds:
       - CGO_ENABLED=0
     goos:
       - linux
-      - windows
       - darwin
       - freebsd
       - openbsd
@@ -25,78 +25,106 @@ builds:
 
 archives:
   - id: binary
-    format: binary
+    formats: ["binary"]
     name_template: "web-proxy_{{ .Os }}_{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}{{ with .Mips }}_{{ . }}{{ end }}{{ if not (eq .Amd64 \"v1\") }}{{ .Amd64 }}{{ end }}"
 
   - id: tar
-    format: tar.gz
+    formats: ["tar.gz"]
 
-dockers:
-  - image_templates:
-      - "ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-amd64"
-    dockerfile: Dockerfile
-    use: buildx
-    build_flag_templates:
-      - --platform=linux/amd64
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-      - --label=org.opencontainers.image.description=web-proxy
-      - --label=org.opencontainers.image.created={{.Date}}
-      - --label=org.opencontainers.image.name={{.ProjectName}}
-      - --label=org.opencontainers.image.revision={{.FullCommit}}
-      - --label=org.opencontainers.image.version={{.Version}}
-      - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxkaya.com"}]
-      - --label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/maxpeterkaya/web-proxy/main/README.md
-      - --label=io.artifacthub.package.keywords=update-server,github,electron,tauri,wails
-      - --label=io.artifacthub.package.license=Apache-2.0
-  - image_templates:
-      - "ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm64"
-    goarch: arm64
-    dockerfile: Dockerfile
-    use: buildx
-    build_flag_templates:
-      - --platform=linux/arm64/v8
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-      - --label=org.opencontainers.image.description=web-proxy
-      - --label=org.opencontainers.image.created={{.Date}}
-      - --label=org.opencontainers.image.name={{.ProjectName}}
-      - --label=org.opencontainers.image.revision={{.FullCommit}}
-      - --label=org.opencontainers.image.version={{.Version}}
-      - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxkaya.com"}]
-      - --label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/maxpeterkaya/web-proxy/main/README.md
-      - --label=io.artifacthub.package.keywords=logging,log,alloy,promtail,grafana,loki,nextjs,golang,json
-      - --label=io.artifacthub.package.license=Apache-2.0
-  - image_templates:
-      - "ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm"
-    goarch: arm
-    dockerfile: Dockerfile
-    use: buildx
-    build_flag_templates:
-      - --platform=linux/arm/v8
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-      - --label=org.opencontainers.image.description=web-proxy
-      - --label=org.opencontainers.image.created={{.Date}}
-      - --label=org.opencontainers.image.name={{.ProjectName}}
-      - --label=org.opencontainers.image.revision={{.FullCommit}}
-      - --label=org.opencontainers.image.version={{.Version}}
-      - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxkaya.com"}]
-      - --label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/maxpeterkaya/web-proxy/main/README.md
-      - --label=io.artifacthub.package.keywords=logging,log,alloy,promtail,grafana,loki,nextjs,golang,json
-      - --label=io.artifacthub.package.license=Apache-2.0
+gitea_urls:
+  api: https://vc.maxkaya.com/api/v1
+  download: https://vc.maxkaya.com
+  skip_tls_verify: true
 
-docker_manifests:
-  - name_template: 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}'
-    image_templates:
-      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-amd64'
-      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm64'
-      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm'
-  - name_template: 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:latest'
-    image_templates:
-      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-amd64'
-      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm64'
-      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm'
+#dockers_v2:
+#  - id: web-proxy
+#    ids:
+#      - binary
+#      - web-proxy
+#    images:
+#      - "vc.maxkaya.com/maxpeterkaya/web-proxy"
+#    tags:
+#      - "v{{ .Version }}"
+#      - "{{ if not .IsNightly }}latest{{ end }}"
+#    labels:
+#      "org.opencontainers.image.description": "web-proxy"
+#      "org.opencontainers.image.created": "{{.Date}}"
+#      "org.opencontainers.image.name": "{{.ProjectName}}"
+#      "org.opencontainers.image.revision": "{{.FullCommit}}"
+#      "org.opencontainers.image.version": "{{.Version}}"
+#      "org.opencontainers.image.source": "{{.GitURL}}"
+#    platforms:
+#      - linux/amd64
+#      - linux/arm64
+#      - linux/arm/v7
+#    sbom: "{{ not .IsNightly }}"
+
+#dockers:
+#  - image_templates:
+#      - "ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-amd64"
+#    dockerfile: Dockerfile
+#    use: buildx
+#    build_flag_templates:
+#      - --platform=linux/amd64
+#      - --label=org.opencontainers.image.licenses=Apache-2.0
+#      - --label=org.opencontainers.image.description=web-proxy
+#      - --label=org.opencontainers.image.created={{.Date}}
+#      - --label=org.opencontainers.image.name={{.ProjectName}}
+#      - --label=org.opencontainers.image.revision={{.FullCommit}}
+#      - --label=org.opencontainers.image.version={{.Version}}
+#      - --label=org.opencontainers.image.source={{.GitURL}}
+#      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxkaya.com"}]
+#      - --label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/maxpeterkaya/web-proxy/main/README.md
+#      - --label=io.artifacthub.package.keywords=update-server,github,electron,tauri,wails
+#      - --label=io.artifacthub.package.license=Apache-2.0
+#  - image_templates:
+#      - "ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm64"
+#    goarch: arm64
+#    dockerfile: Dockerfile
+#    use: buildx
+#    build_flag_templates:
+#      - --platform=linux/arm64/v8
+#      - --label=org.opencontainers.image.licenses=Apache-2.0
+#      - --label=org.opencontainers.image.description=web-proxy
+#      - --label=org.opencontainers.image.created={{.Date}}
+#      - --label=org.opencontainers.image.name={{.ProjectName}}
+#      - --label=org.opencontainers.image.revision={{.FullCommit}}
+#      - --label=org.opencontainers.image.version={{.Version}}
+#      - --label=org.opencontainers.image.source={{.GitURL}}
+#      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxkaya.com"}]
+#      - --label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/maxpeterkaya/web-proxy/main/README.md
+#      - --label=io.artifacthub.package.keywords=logging,log,alloy,promtail,grafana,loki,nextjs,golang,json
+#      - --label=io.artifacthub.package.license=Apache-2.0
+#  - image_templates:
+#      - "ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm"
+#    goarch: arm
+#    dockerfile: Dockerfile
+#    use: buildx
+#    build_flag_templates:
+#      - --platform=linux/arm/v8
+#      - --label=org.opencontainers.image.licenses=Apache-2.0
+#      - --label=org.opencontainers.image.description=web-proxy
+#      - --label=org.opencontainers.image.created={{.Date}}
+#      - --label=org.opencontainers.image.name={{.ProjectName}}
+#      - --label=org.opencontainers.image.revision={{.FullCommit}}
+#      - --label=org.opencontainers.image.version={{.Version}}
+#      - --label=org.opencontainers.image.source={{.GitURL}}
+#      - --label=io.artifacthub.package.maintainers=[{"name":"maxpeterkaya","email":"git@maxkaya.com"}]
+#      - --label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/maxpeterkaya/web-proxy/main/README.md
+#      - --label=io.artifacthub.package.keywords=logging,log,alloy,promtail,grafana,loki,nextjs,golang,json
+#      - --label=io.artifacthub.package.license=Apache-2.0
+#
+#docker_manifests:
+#  - name_template: 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}'
+#    image_templates:
+#      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-amd64'
+#      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm64'
+#      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm'
+#  - name_template: 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:latest'
+#    image_templates:
+#      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-amd64'
+#      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm64'
+#      - 'ghcr.io/maxpeterkaya/{{ .ProjectName }}:{{ .Version }}-arm'
 
 source:
   enabled: true

@@ -45,44 +45,16 @@ jobs:
           username: maxpeterkaya
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: PrepareReg Names
-        id: read-docker-image-identifiers
-        run: |
-          echo VERSION_TAG=$(echo ${{ steps.version_step.outputs.version_tag }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v6
+      - name: Set up Go
+        uses: actions/setup-go@v6
         with:
-          push: true
-          tags: vc.maxkaya.com/${{env.VERSION_TAG}}
-          build-args: |
-            VERSION=${{ steps.version_step.outputs.version }}
-            VERSION_TAG=${{ steps.version_step.outputs.version_tag }}
-            GIT_VERSION=${{ steps.version_step.outputs.version }}
-            GIT_COMMIT=${{ env.COMMIT_SHA_SHORT }}
-            GIT_DATE=${{ env.CURRENT_TIME }}
+          go-version: "^1"
 
-  release:
-    needs: build
-    runs-on: arch
-
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Update CHANGELOG
-        id: changelog
-        uses: https://vc.maxkaya.com/workflows/changelog-action@v1
+      - name: Run GoReleaser
+        uses: https://vc.maxkaya.com/workflows/goreleaser-action@v6
         with:
-          token: ${{ secrets.TOKEN }}
-          tag: ${{ github.ref_name }}
-          writeToFile: 'false'
-
-      - name: update release
-        id: update_release
-        uses: https://github.com/tubone24/update_release@v1.0
+          distribution: goreleaser
+          version: latest
+          args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        with:
-          body: ${{ steps.changelog.outputs.changes }}
-          release_name: Release ${{ github.ref_name }}
+          GITEA_TOKEN: ${{ secrets.DOCKER_TOKEN }}

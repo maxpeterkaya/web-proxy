@@ -1,4 +1,4 @@
-FROM debian:bookworm AS certs
+FROM debian:trixie AS certs
 
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && \
     rm -rf /var/lib/apt/lists/*

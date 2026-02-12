@@ -21,4 +21,4 @@ This has all the necessary steps to add web-proxy as a binary along with in-dept
 Just a quick template for port-mapping if you're not familiar with it.
 
 > For anything else you may need, refer to the
-> root [README](https://github.com/maxpeterkaya/web-proxy/blob/main/README.md).
+> root [README](https://vc.maxkaya.com/maxpeterkaya/web-proxy/src/branch/main/README.md).

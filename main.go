@@ -130,6 +130,17 @@ func main() {
 			return nil
 		},
 	}))
+	e.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+		if Config.Authentication.Type == "none" {
+			return true, nil
+		}
+
+		if username == Config.Authentication.Username && SHA256Hash(password) == Config.Authentication.PassHash {
+			return true, nil
+		}
+
+		return false, nil
+	}))
 
 	var CMD *exec.Cmd
 
@@ -156,11 +167,7 @@ func main() {
 	} else {
 		target, _ := url.Parse(fmt.Sprintf("http://localhost:%d", Config.ProxyPort))
 
-		e.Use(middleware.Proxy(middleware.NewRoundRobinBalancer([]*middleware.ProxyTarget{
-			{
-				URL: target,
-			},
-		})))
+		e.Use(middleware.Proxy(middleware.NewRoundRobinBalancer([]*middleware.ProxyTarget{{URL: target}})))
 	}
 
 	NpmVersionExtractor()

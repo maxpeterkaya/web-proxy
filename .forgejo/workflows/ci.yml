@@ -16,6 +16,8 @@ jobs:
         run: apk add --no-cache docker-cli git ca-certificates
 
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Extract Version
         id: version_step

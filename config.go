@@ -9,6 +9,7 @@ import (
 type ConfigStruct struct {
 	TimeZone       string
 	Port           int
+	ProxyHost      string
 	ProxyPort      int
 	Domain         string
 	PublicFolder   string
@@ -27,6 +28,7 @@ func InitConfig() {
 	Config = &ConfigStruct{
 		Domain:       getEnv("DOMAIN", "localhost"),
 		Port:         getEnvAsInt("PORT", 3000),
+		ProxyHost:    getEnv("PROXY_HOST", "localhost"),
 		ProxyPort:    getEnvAsInt("PROXY_PORT", 3001),
 		TimeZone:     getEnv("TZ", "UTC"),
 		PublicFolder: getEnv("PUBLIC_FOLDER", "/public/"),

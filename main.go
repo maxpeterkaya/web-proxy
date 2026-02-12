@@ -165,7 +165,7 @@ func main() {
 	if staticWeb {
 		e.Static("/", staticFolder)
 	} else {
-		target, _ := url.Parse(fmt.Sprintf("http://localhost:%d", Config.ProxyPort))
+		target, _ := url.Parse(fmt.Sprintf("http://%s:%d", Config.ProxyHost, Config.ProxyPort))
 
 		e.Use(middleware.Proxy(middleware.NewRoundRobinBalancer([]*middleware.ProxyTarget{{URL: target}})))
 	}

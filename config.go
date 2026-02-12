@@ -3,14 +3,22 @@ package main
 import (
 	"os"
 	"strconv"
+	"strings"
 )
 
 type ConfigStruct struct {
-	TimeZone     string
-	Port         int
-	ProxyPort    int
-	Domain       string
-	PublicFolder string
+	TimeZone       string
+	Port           int
+	ProxyPort      int
+	Domain         string
+	PublicFolder   string
+	Authentication Authentication
+}
+
+type Authentication struct {
+	Username string
+	PassHash string
+	Type     string // none, basic, forms
 }
 
 var Config *ConfigStruct
@@ -22,6 +30,11 @@ func InitConfig() {
 		ProxyPort:    getEnvAsInt("PROXY_PORT", 3001),
 		TimeZone:     getEnv("TZ", "UTC"),
 		PublicFolder: getEnv("PUBLIC_FOLDER", "/public/"),
+		Authentication: Authentication{
+			Username: getEnv("AUTH_USER", "admin"),
+			PassHash: getEnv("AUTH_PASS", GenerateKey(64)), // Generate a random password as default in case user forgot to set flag
+			Type:     strings.ToLower(getEnv("AUTH_TYPE", "none")),
+		},
 	}
 }
 func getEnv(key string, defaultVal string) string {

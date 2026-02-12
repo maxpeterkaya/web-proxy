@@ -32,7 +32,7 @@ func InitConfig() {
 		PublicFolder: getEnv("PUBLIC_FOLDER", "/public/"),
 		Authentication: Authentication{
 			Username: getEnv("AUTH_USER", "admin"),
-			PassHash: getEnv("AUTH_PASS", GenerateKey(64)), // Generate a random password as default in case user forgot to set flag
+			PassHash: getEnv("AUTH_PASS", SHA256Hash(GenerateKey(64))), // Generate a random password as default in case user forgot to set flag
 			Type:     strings.ToLower(getEnv("AUTH_TYPE", "none")),
 		},
 	}

@@ -33,11 +33,13 @@ Add the following scripts to your ``package.json``:
 
 After doing so, make sure web-proxy is properly configured
 
-## [Installation Guide](https://github.com/maxpeterkaya/web-proxy/blob/main/INSTALL-GUIDE.md)
+## [Installation Guide](https://vc.maxkaya.com/maxpeterkaya/web-proxy/src/branch/main/INSTALL-GUIDE.md)
 
 ## Examples
 
-- [Container middleware](https://github.com/maxpeterkaya/web-proxy/tree/main/examples/container-middleware)
+- [Container middleware](https://vc.maxkaya.com/maxpeterkaya/web-proxy/src/branch/main/examples/container-middleware)
+- [Static website](https://vc.maxkaya.com/maxpeterkaya/web-proxy/src/branch/main/examples/static-website)
+- [Authentication](https://vc.maxkaya.com/maxpeterkaya/web-proxy/src/branch/main/examples/authentication)
 
 ## Roadmap
 

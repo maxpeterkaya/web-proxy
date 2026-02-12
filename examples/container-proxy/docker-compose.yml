@@ -1,0 +1,10 @@
+services:
+  proxy:
+    image: vc.maxkaya.com/maxpeterkaya/web-proxy:latest
+    ports:
+      - "PORT:3000"
+    environment:
+      - PROXY_HOST=example_container # refer to readme for details (default: localhost)
+      - PROXY_PORT= # Whatever port the downstream proxy runs on by default (default: 3000)
+  example_container:
+    image: example

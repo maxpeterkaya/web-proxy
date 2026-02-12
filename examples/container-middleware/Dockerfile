@@ -7,7 +7,7 @@ RUN apk add --no-cache curl
 WORKDIR /app
 
 # Download the latest linux amd64 version of web-proxy and give the binary execution permissions
-RUN curl -L -o /usr/bin/web-proxy https://github.com/maxpeterkaya/web-proxy/releases/latest/download/web-proxy_linux_amd64 && chmod +x /usr/bin/web-proxy
+RUN curl -L -o /usr/bin/web-proxy https://vc.maxkaya.com/maxpeterkaya/web-proxy/releases/download/latest/web-proxy_linux_amd64 && chmod +x /usr/bin/web-proxy
 
 # Ensure the entrypoint has execute permissions
 RUN chmod +x /app/entrypoint.sh

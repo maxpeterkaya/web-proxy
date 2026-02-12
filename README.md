@@ -1,7 +1,7 @@
 # Web-proxy
 
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/web-proxy)](https://artifacthub.io/packages/search?repo=web-proxy)
-
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/web-proxy)](https://artifacthub.io/packages/search?repo=web-proxy) ![image](https://vc.maxkaya.com/maxpeterkaya/web-proxy/badges/release.svg) ![image](https://vc.maxkaya.com/maxpeterkaya/web-proxy/badges/workflows/ci.yml/badge.svg) ![image](https://vc.maxkaya.com/maxpeterkaya/web-proxy/badges/pulls/open.svg)
+![image](https://vc.maxkaya.com/maxpeterkaya/web-proxy/badges/issues/open.svg)
 ## Introduction
 
 This project aims to provide a better logging solution to web applications that lack structured logs.

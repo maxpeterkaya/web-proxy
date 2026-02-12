@@ -40,6 +40,7 @@ After doing so, make sure web-proxy is properly configured
 - [Container middleware](https://vc.maxkaya.com/maxpeterkaya/web-proxy/src/branch/main/examples/container-middleware)
 - [Static website](https://vc.maxkaya.com/maxpeterkaya/web-proxy/src/branch/main/examples/static-website)
 - [Authentication](https://vc.maxkaya.com/maxpeterkaya/web-proxy/src/branch/main/examples/authentication)
+- [Container proxy](https://vc.maxkaya.com/maxpeterkaya/web-proxy/src/branch/main/examples/container-proxy)
 
 ## Roadmap
 
